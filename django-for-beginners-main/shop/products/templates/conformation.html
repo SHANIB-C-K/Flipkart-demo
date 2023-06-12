@@ -1,0 +1,16 @@
+{% extends 'theme.html' %}
+
+{% block title%}
+Booking Confirmation
+{% endblock %}
+
+{% block content%}
+<div class="container text-center">
+    <h1>Booking Confirmation</h1>
+
+    <div class="alert alert-info" role="alert">
+        We have received your appointment request, our representative will call you shortly.
+    </div>
+    <a href="{% url 'index' %}" class="btn btn-primary">Back to Home</a>
+</div>
+{% endblock %}

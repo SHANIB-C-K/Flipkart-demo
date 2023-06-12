@@ -1,0 +1,461 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Django For Beginners</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        line-height: 1.5;
+        margin: 20px;
+      }
+
+      h1 {
+        font-size: 24px;
+        margin-bottom: 10px;
+      }
+
+      h2 {
+        font-size: 20px;
+        margin-top: 20px;
+        margin-bottom: 10px;
+      }
+
+      p {
+        margin-bottom: 10px;
+      }
+
+      pre {
+        background-color: #f0f0f0;
+        padding: 10px;
+        margin-bottom: 10px;
+      }
+
+      code {
+        font-family: Consolas, monospace;
+      }
+
+      strong {
+        font-weight: bold;
+      }
+    </style>
+  </head>
+  <body>
+    <h1 id="django-for-beginners">django-for-beginners</h1>
+    <hr>
+    <p>
+      Welcome to the Django for beginners! In this tutorial, we will walk
+      through building a simple web application using Django. We&#39;ll cover
+      the essential concepts. By following this hands-on approach, you&#39;ll
+      gain understanding of Django&#39;s core features. Let&#39;s get started!
+    </p>
+    <h2 id="step-1-setting-up-the-project">Step 1: Setting Up the Project</h2>
+    <hr>
+    <p>
+      Install Python: Follow the official Python installation guide for your
+      operating system.
+    </p>
+    <p><strong>Create a Virtual Environment:</strong></p>
+    <p>Open your terminal and run the following commands:</p>
+    <pre><code>python3 -m venv myenv
+</code></pre>
+    <pre><code>source myenv/bin/activate
+</code></pre>
+    <p><strong>Install Django:</strong></p>
+    <p>Run the command in your virtual environment to install Django.</p>
+    <pre><code>pip install django
+</code></pre>
+    <p>To check installation</p>
+    <pre><code>python3 -m django --version
+</code></pre>
+    <p><strong>Create a Django Project:</strong></p>
+    <p>Run</p>
+    <pre><code>django-admin startproject shop
+</code></pre>
+    <p>
+      To create a new Django project named
+      <code>shop</code>
+      .
+    </p>
+    <p>Run</p>
+    <pre><code>python3 manage.py runserver 
+</code></pre>
+    <p>To run the development server</p>
+    <h2 id="step-2-creating-new-application-inside-project">
+      Step 2: Creating new application inside project
+    </h2>
+    <hr>
+    <p>Run</p>
+    <pre><code>
+python3 manage.py startapp products
+</code></pre>
+    <p>
+      This command should be executed in the same directory where the
+      <code>manage.py</code>
+      file is located, which is the root directory of your Django project.
+    </p>
+    <p>
+      After running this command, Django will generate a new folder named
+      &quot;products&quot; with the initial structure of the app
+    </p>
+    <p>
+      Once you&#39;ve created the &quot;products&quot; app, you&#39;ll need to
+      include it in your project&#39;s settings. Open the
+      <code>shop/settings.py</code>
+      file and find the
+      <code>INSTALLED_APPS</code>
+      list and add
+      <code>&quot;products.apps.ProductsConfig&quot;</code>
+      to the list
+    </p>
+    <pre><code>
+INSTALLED_APPS = [
+    # ...
+    &quot;products.apps.ProductsConfig&quot;,
+    # ...
+]
+</code></pre>
+    <h2 id="step-3-creating-views-and-configuring-urls-and-routing">
+      Step 3: Creating Views and Configuring URLs and Routing
+    </h2>
+    <hr>
+    <p>
+      Open the file
+      <code>views.py</code>
+      inside the
+      <code>products</code>
+      folder and add the code given below
+    </p>
+    <pre><code>
+from django.shortcuts import render
+from django.http import HttpResponse
+
+# Create your views here.
+def index(request):
+    return HttpResponse(&quot;Hello, world. You&#39;re at the products index.&quot;) 
+</code></pre>
+    <p>
+      Create a file
+      <code>urls.py</code>
+      inside products folder and add the code below
+    </p>
+    <pre><code>
+from django.urls import path
+from . import views
+
+urlpatterns = [
+    path(&#39;&#39;, views.index, name=&#39;index&#39;),
+]
+</code></pre>
+    <p>
+      Now open
+      <code>urls.py</code>
+      in shop folder and add code given below
+    </p>
+    <pre><code>
+from django.contrib import admin
+from django.urls import path, include
+
+urlpatterns = [
+    path(&quot;admin/&quot;, admin.site.urls),
+    path(&quot;products/&quot;, include(&quot;products.urls&quot;)),
+]
+</code></pre>
+    <p>Now run the server using command</p>
+    <pre><code>python3 manage.py runserver 
+</code></pre>
+    <p>
+      Open the url
+      <code>http://127.0.0.1:8000/products/</code>
+      to see the first django app
+    </p>
+    <h2 id="step-4-building-models-and-database-relationships">
+      Step 4: Building Models and Database Relationships
+    </h2>
+    <hr>
+    <p><strong>Configure Database Settings:</strong></p>
+    <p>
+      Open
+      <code>shop/settings.py</code>
+      and configure the database settings according to your needs (e.g., SQLite,
+      MySQL, PostgreSQL).
+    </p>
+    <p><strong>Define Models:</strong></p>
+    <p>
+      Open file called
+      <code>models.py</code>
+      in
+      <code>products</code>
+      directory.
+    </p>
+    <p>
+      Define your models using Django&#39;s model syntax, including fields and
+      relationships.
+    </p>
+    <pre><code>
+from django.db import models
+
+# Create your models here.
+class Product(models.Model):
+    name = models.CharField(max_length=200)
+    price = models.FloatField()
+    stock = models.IntegerField()
+    image = models.CharField(max_length=3000)
+    
+</code></pre>
+    <p><strong>Create Database Tables:</strong></p>
+    <p>Run</p>
+    <pre><code>python3 manage.py makemigrations
+</code></pre>
+    <pre><code>python3 manage.py migrate
+</code></pre>
+    <p>to create the necessary database tables.</p>
+    <p>
+      Now install
+      <a href="https://sqlitebrowser.org/dl/">DB Browser for SQLite</a>
+      and open
+      <code>db.sqlite3</code>
+      file inside project directory to view it
+    </p>
+    <h2 id="step-5-django-admin-panel">Step 5: Django Admin Panel</h2>
+    <hr>
+    <p>
+      Before acccessing the django admin page we need to create an admin user
+      for that
+    </p>
+    <p>Run</p>
+    <pre><code>
+python manage.py createsuperuser
+</code></pre>
+    <p>provide username, email and password to complete admin user creation</p>
+    <p><strong>Register Models:</strong></p>
+    <p>
+      Open
+      <code>products/admin.py</code>
+      and register your models to make them accessible via the Django admin
+      interface.
+    </p>
+    <pre><code>
+from django.contrib import admin
+from .models import Product
+
+# Register your models here.
+admin.site.register(Product)
+</code></pre>
+    <p>To customise view of products in admin panel</p>
+    <pre><code>
+from django.contrib import admin
+from .models import Product
+
+class ProductAdmin(admin.ModelAdmin):
+    list_display = (&#39;name&#39;, &#39;price&#39;, &#39;stock&#39;)
+
+# Register your models here.
+admin.site.register(Product, ProductAdmin)
+</code></pre>
+    <h2 id="step-6-creating-templates">Step 6: Creating Templates</h2>
+    <hr>
+    <p>
+      Create a folder called
+      <code>templates</code>
+      inside products directory
+    </p>
+    <p>
+      Inside templates folder create a html file called
+      <code>index.html</code>
+    </p>
+    <pre><code>
+&lt;h2&gt;Products&lt;/h2&gt;
+&lt;ul&gt;
+    {% for product in products %}
+        &lt;li&gt;{{ product.name }}&lt;/li&gt;
+    {% endfor %}
+&lt;/ul&gt;
+</code></pre>
+    <p>
+      Now modify the
+      <code>views.py</code>
+      file so as to display index.html
+    </p>
+    <pre><code>
+from django.shortcuts import render
+from django.http import HttpResponse
+from .models import Product
+
+# Create your views here.
+def index(request):
+    products = Product.objects.all()
+    return render(request, &#39;index.html&#39;, {&#39;products&#39;: products}) 
+    
+</code></pre>
+    <h2 id="step-7-using-bootstrap">Step 7: Using Bootstrap</h2>
+    <hr>
+    <p>
+      Create a file called
+      <code>theme.html</code>
+      inside
+      <code>products/templates</code>
+      directory as given below
+    </p>
+    <pre><code>
+&lt;!doctype html&gt;
+&lt;html lang=&quot;en&quot;&gt;
+  &lt;head&gt;
+    &lt;meta charset=&quot;utf-8&quot;&gt;
+    &lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1&quot;&gt;
+    &lt;title&gt;Shop&lt;/title&gt;
+    &lt;link href=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css&quot; rel=&quot;stylesheet&quot; integrity=&quot;sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ&quot; crossorigin=&quot;anonymous&quot;&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    {% block content %}
+
+    {% endblock %}
+
+    &lt;script src=&quot;https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js&quot; integrity=&quot;sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe&quot; crossorigin=&quot;anonymous&quot;&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</code></pre>
+    <p>
+      Modify
+      <code>index.html</code>
+      as given below
+    </p>
+    <pre><code>
+{% extends &#39;theme.html&#39; %}
+
+{% block content %}
+
+&lt;h2&gt;Products&lt;/h2&gt;
+
+&lt;div class=&quot;container&quot;&gt;
+
+    {% for product in products %}
+             
+        &lt;div class=&quot;card&quot; style=&quot;width: 18rem;&quot;&gt;
+            &lt;img src=&quot;{{product.image}}&quot; class=&quot;card-img-top&quot; alt=&quot;...&quot;&gt;
+            &lt;div class=&quot;card-body&quot;&gt;
+            &lt;h5 class=&quot;card-title&quot;&gt;{{product.name}}&lt;/h5&gt;
+            &lt;p class=&quot;card-text&quot;&gt;${{product.price}}&lt;/p&gt;
+            &lt;a href=&quot;#&quot; class=&quot;btn btn-primary&quot;&gt;Go somewhere&lt;/a&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    
+    {% endfor %}  
+
+&lt;/div&gt;
+    
+{% endblock %}
+    
+</code></pre>
+    <p>
+      Your Shop is now complete. You can modify this app as per your creativity
+      and logic
+    </p>
+    <h2 id="conclusion">Conclusion</h2>
+    <hr>
+    <p>
+      Congratulations on completing the practical Django tutorial for beginners!
+      You&#39;ve built a simple web application with database models, views,
+      templates, URL routing. This hands-on approach should have provided you
+      with a foundation in Django development. Keep exploring Django&#39;s
+      extensive features and consider building more complex projects to further
+      enhance your skills.
+    </p>
+    <p><strong>Happy coding!</strong></p>
+    <h2 id="step-8-further-learning">Step 8: Further Learning</h2>
+    <hr>
+    <p><strong>Django Documentation:</strong></p>
+    <p>
+      The official Django documentation is an excellent resource to explore
+      in-depth explanations, tutorials, and reference materials. Visit the
+      Django documentation website at
+      <a href="https://docs.djangoproject.com/">
+        https://docs.djangoproject.com/
+      </a>
+      to access the latest documentation.
+    </p>
+    <p><strong>Django for Beginners:</strong></p>
+    <p>
+      A step-by-step guidebook written by William S. Vincent that covers the
+      basics of Django development. It provides hands-on examples and practical
+      explanations for beginners. You can find it at
+      <a href="https://djangoforbeginners.com/">
+        https://djangoforbeginners.com/
+      </a>
+      .
+    </p>
+    <p><strong>Django Girls Tutorial:</strong></p>
+    <p>
+      Django Girls offers a beginner-friendly tutorial that walks you through
+      building a simple web application using Django. It provides clear
+      instructions and code examples. Access the tutorial at
+      <a href="https://tutorial.djangogirls.org/">
+        https://tutorial.djangogirls.org/
+      </a>
+      .
+    </p>
+    <p><strong>DjangoCon Videos:</strong></p>
+    <p>
+      DjangoCon is an annual conference focused on Django and web development.
+      The conference features talks and presentations by industry experts. You
+      can find recorded videos from past DjangoCon events on YouTube and the
+      official DjangoCon website.
+    </p>
+    <p><strong>Django Project&#39;s YouTube Channel:</strong></p>
+    <p>
+      The Django Project maintains a YouTube channel where you can find video
+      tutorials, talks, and interviews related to Django. Visit the channel at
+      <a href="https://www.youtube.com/user/django">
+        https://www.youtube.com/user/django
+      </a>
+      .
+    </p>
+    <p><strong>Two Scoops of Django:</strong></p>
+    <p>
+      A comprehensive book by Daniel Roy Greenfeld and Audrey Roy Greenfeld that
+      provides best practices, tips, and techniques for Django development. It
+      covers various topics and advanced concepts. Find it at
+      <a
+        href="https://www.twoscoopspress.com/products/two-scoops-of-django-3-x"
+      >
+        https://www.twoscoopspress.com/products/two-scoops-of-django-3-x
+      </a>
+      .
+    </p>
+    <p><strong>Django Reddit and Forum:</strong></p>
+    <p>
+      Engage with the Django community through platforms like the Django
+      subreddit
+      <a href="https://www.reddit.com/r/django/">
+        https://www.reddit.com/r/django/
+      </a>
+      and the Django forum
+      <a href="https://forum.djangoproject.com/">
+        https://forum.djangoproject.com/
+      </a>
+      . Participate in discussions, ask questions, and learn from other Django
+      developers.
+    </p>
+    <p><strong>Django Packages:</strong></p>
+    <p>
+      Explore the Django Packages website
+      <a href="https://djangopackages.org/">https://djangopackages.org/</a>
+      to discover and explore a wide range of Django packages and libraries.
+      It&#39;s a valuable resource to find pre-built solutions for common
+      functionalities.
+    </p>
+    <p>
+      <em>
+        <strong>
+          Remember, practice is key to mastering Django. Work on personal
+          projects, contribute to open-source projects, and experiment with
+          different features and techniques. Stay up-to-date with the latest
+          Django releases and advancements in the Django ecosystem.
+        </strong>
+      </em>
+    </p>
+    <h3 id="happy-learning">Happy learning!</h3>
+  </body>
+</html>

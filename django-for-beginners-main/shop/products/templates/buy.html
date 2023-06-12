@@ -1,0 +1,99 @@
+{% load crispy_forms_tags %}
+
+
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Shop</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-KK94CHFLLe+nY2dmCWGMq91rCGa5gtU4mk92HdvYe+M/SXH301p5ILy+dN9+nJOZ" crossorigin="anonymous">
+</head>
+
+<body style="background-color: rgb(238, 245, 250);">
+  <nav style="height: 60px;" class="navbar navbar-expand-lg text-white bg-primary">
+    <div class="container">
+      <a class="navbar-brand text-white" href=""><img width="100px"
+          src="https://static-assets-web.flixcart.com/fk-p-linchpin-web/fk-cp-zion/img/fk-plus_3b0baa.png" alt=""></a>
+      <button class="navbar-toggler text-white" type="button" data-bs-toggle="collapse"
+        data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false"
+        aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <form class="d-flex w-50" role="search">
+          <input style="border-radius: 0;" class="form-control me-5" type="search"
+            placeholder="Search for brands And more" aria-label="Search">
+        </form>
+        <ul class="navbar-nav me-auto mb-2 d-flex mb-lg-0 mx-5">
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              My Account
+            </a>
+            <ul class="dropdown-menu">
+              {% if request.user.is_authenticated %}
+              <li>Hello, {{user.username}} </li>
+              <li><a class="dropdown-item" href="logout">Logout</a></li>
+              {% else %}
+              <li><a class="dropdown-item" href="register">Register</a></li>
+              <li><a class="dropdown-item" href="login">Login</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="">Something else here</a></li>
+              {% endif %}
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link active text-white" aria-current="page" target="_blank" href="/admin">Admin Page</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle text-white" href="" role="button" data-bs-toggle="dropdown"
+              aria-expanded="false">
+              More
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="">Action</a></li>
+              <li><a class="dropdown-item" href="">Another action</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="">Something else here</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link text-white " href="">Cart</a>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  {% if request.user.is_authenticated %}
+  <form action="" method='POST'>
+    {% csrf_token %}
+    {{ form | crispy }}
+
+    <button class="btn btn-primary mb-4" type="submit">Submit</button>
+    <hr>
+</form>
+
+  {% else %}
+  <div style="height: 100vh" class="d-flex justify-content-center align-items-center">
+    <a class="btn btn-primary mx-3" href='login/'>Login</a>
+    <a class="btn btn-primary" href='register/'>Sign Up</a>
+  </div>
+  {% endif %}
+
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe"
+    crossorigin="anonymous"></script>
+
+
+</body>
+
+</html>
